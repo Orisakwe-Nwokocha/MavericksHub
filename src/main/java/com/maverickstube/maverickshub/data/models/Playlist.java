@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import static jakarta.persistence.FetchType.EAGER;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static java.time.LocalDateTime.now;
 
@@ -34,15 +35,23 @@ public class Playlist {
     @Setter(AccessLevel.NONE)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
-    private LocalDateTime createdAt;
+    private LocalDateTime timeCreated;
 
     @Setter(AccessLevel.NONE)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
-    private LocalDateTime updatedAt;
+    private LocalDateTime timeUpdated;
 
 //    @OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
 //    private List<Media> media;
+
+    @ManyToMany(fetch = EAGER)
+    @JoinTable(
+            name = "playlist_media",
+            joinColumns = @JoinColumn(name = "playlist_id"),
+            inverseJoinColumns = @JoinColumn(name = "media_id")
+    )
+    private List<Media> media;
 
 
     @ManyToOne
@@ -50,12 +59,12 @@ public class Playlist {
 
 
     @PrePersist
-    private void setCreatedAt() {
-        createdAt = now();
+    private void setTimeCreated() {
+        this.timeCreated = now();
     }
 
     @PreUpdate
-    private void setUpdatedAt() {
-        updatedAt = now();
+    private void setTimeUpdated() {
+        this.timeUpdated = now();
     }
 }

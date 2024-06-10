@@ -7,8 +7,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.fge.jsonpatch.JsonPatch;
 import com.github.fge.jsonpatch.JsonPatchException;
-import com.maverickstube.maverickshub.data.models.Playlist;
-import com.maverickstube.maverickshub.dtos.requests.AddMediaToPlaylistRequest;
 import com.maverickstube.maverickshub.dtos.requests.UploadMediaRequest;
 import com.maverickstube.maverickshub.dtos.responses.MediaResponse;
 import com.maverickstube.maverickshub.dtos.responses.UpdateMediaResponse;
@@ -90,17 +88,8 @@ public class MavericksHubMediaService implements MediaService{
                 .toList();
     }
 
-
-    @Override
-    public List<Media> getMedia(AddMediaToPlaylistRequest addMediaRequest, Playlist playlist) throws PlaylistNotFoundException {
-        Media media = getMediaBy(addMediaRequest.getMediaId());
-        media.setPlaylist(playlist);
-        media = mediaRepository.save(media);
-        return mediaRepository.findAllMediaForPlaylist(playlist.getId());
-    }
-
     @Override
     public List<Media> getMediaForPlaylist(Long playlistId) throws PlaylistNotFoundException {
-        return mediaRepository.findAllMediaForPlaylist(playlistId);
+        return mediaRepository.findByPlaylistId(playlistId);
     }
 }

@@ -23,11 +23,9 @@ public class ShufflePlaylistResponse {
     private String description;
 
     @JsonSerialize(using = LocalDateTimeSerializer.class)
-    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDateTime timeCreated;
 
     @JsonSerialize(using = LocalDateTimeSerializer.class)
-    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDateTime timeUpdated;
 
     private List<MediaResponse> media;

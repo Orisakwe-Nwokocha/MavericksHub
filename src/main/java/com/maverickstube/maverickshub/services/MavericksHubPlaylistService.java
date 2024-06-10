@@ -49,11 +49,12 @@ public class MavericksHubPlaylistService implements PlaylistService {
     @Override
     public AddMediaToPlaylistResponse addMediaToPlaylist(AddMediaToPlaylistRequest addMediaRequest) throws PlaylistNotFoundException {
         Playlist playlist = getPlaylistBy(addMediaRequest.getPlaylistId());
-        List<Media> media = mediaService.getMedia(addMediaRequest, playlist);
-        var response = modelMapper.map(playlist, AddMediaToPlaylistResponse.class);
-        List<MediaResponse> mediaResponse = List.of(modelMapper.map(media, MediaResponse[].class));
-        response.setMedia(mediaResponse);
-        return response;
+        Media media = mediaService.getMediaBy(addMediaRequest.getMediaId());
+        playlist.getMedia().add(media);
+        media.getPlaylist().add(playlist);
+        playlist = playlistRepository.save(playlist);
+
+        return modelMapper.map(playlist, AddMediaToPlaylistResponse.class);
     }
 
     @Override
@@ -68,7 +69,8 @@ public class MavericksHubPlaylistService implements PlaylistService {
     }
 
     @Override
-    public List<Media> getAllMedia(Long playlistId) throws PlaylistNotFoundException {
-        return mediaService.getMediaForPlaylist(playlistId);
+    public List<MediaResponse> getAllMedia(Long playlistId) throws PlaylistNotFoundException {
+        List<Media> media = mediaService.getMediaForPlaylist(playlistId);
+        return List.of(modelMapper.map(media, MediaResponse[].class));
     }
 }

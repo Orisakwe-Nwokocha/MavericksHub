@@ -1,8 +1,6 @@
 package com.maverickstube.maverickshub.services;
 
 import com.github.fge.jsonpatch.JsonPatch;
-import com.maverickstube.maverickshub.data.models.Playlist;
-import com.maverickstube.maverickshub.dtos.requests.AddMediaToPlaylistRequest;
 import com.maverickstube.maverickshub.dtos.requests.UploadMediaRequest;
 import com.maverickstube.maverickshub.dtos.responses.MediaResponse;
 import com.maverickstube.maverickshub.dtos.responses.UpdateMediaResponse;
@@ -21,8 +19,6 @@ public interface MediaService {
     UpdateMediaResponse updateMedia(Long mediaId, JsonPatch updateMediaRequest);
 
     List<MediaResponse> getMediaFor(Long userId) throws UserNotFoundException;
-
-    List<Media> getMedia(AddMediaToPlaylistRequest addMediaRequest, Playlist playlist) throws PlaylistNotFoundException;
 
     List<Media> getMediaForPlaylist(Long playlistId) throws PlaylistNotFoundException;
 }

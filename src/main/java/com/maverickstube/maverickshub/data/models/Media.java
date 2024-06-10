@@ -11,8 +11,10 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static jakarta.persistence.EnumType.STRING;
+import static jakarta.persistence.FetchType.EAGER;
 import static java.time.LocalDateTime.now;
 
 @Entity
@@ -23,22 +25,28 @@ public class Media {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String url;
     private String description;
+
     @Enumerated(value = STRING)
     private Category category;
+
     @Setter(AccessLevel.NONE)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDateTime timeCreated;
+
     @Setter(AccessLevel.NONE)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDateTime timeUpdated;
+
     @ManyToOne
     private User uploader;
-    @ManyToOne
-    private Playlist playlist;
+
+    @ManyToMany(mappedBy = "media", fetch = EAGER)
+    private List<Playlist> playlist;
 
     @PrePersist
     private void setTimeCreated() {
