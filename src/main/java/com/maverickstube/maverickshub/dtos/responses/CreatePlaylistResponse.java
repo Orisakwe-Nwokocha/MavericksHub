@@ -1,13 +1,13 @@
 package com.maverickstube.maverickshub.dtos.responses;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -22,13 +22,13 @@ public class CreatePlaylistResponse {
     @JsonProperty("playlist_description")
     private String description;
 
-    @JsonSerialize(using = LocalDateTimeSerializer.class)
-    private LocalDateTime createdAt;
+    @JsonFormat(pattern = "dd/MM/yyyy 'at' hh:mm a")
+    private LocalDateTime timeCreated;
 
-    @JsonSerialize(using = LocalDateTimeSerializer.class)
-    private LocalDateTime updatedAt;
+    @JsonFormat(pattern = "dd/MM/yyyy 'at' hh:mm a")
+    private LocalDateTime timeUpdated;
 
-    private List<MediaResponse> media;
+    private List<MediaResponse> media = new ArrayList<>();
 
     private UserResponse uploader;
 

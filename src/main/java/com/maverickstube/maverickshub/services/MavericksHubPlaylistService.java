@@ -17,6 +17,7 @@ import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -60,10 +61,9 @@ public class MavericksHubPlaylistService implements PlaylistService {
     @Override
     public ShufflePlaylistResponse shuffle(ShufflePlaylistRequest request) throws PlaylistNotFoundException {
         Playlist playlist = getPlaylistBy(request.getPlaylistId());
-        List<Media> media = mediaService.getMediaForPlaylist(playlist.getId());
-        Collections.shuffle(media);
-        var response = modelMapper.map(media, ShufflePlaylistResponse.class);
-        List<MediaResponse> mediaResponse = List.of(modelMapper.map(media, MediaResponse[].class));
+        ShufflePlaylistResponse response = modelMapper.map(playlist, ShufflePlaylistResponse.class);
+        List<MediaResponse> mediaResponse = getAllMedia(request.getPlaylistId());
+        Collections.shuffle(mediaResponse);
         response.setMedia(mediaResponse);
         return response;
     }
@@ -71,6 +71,6 @@ public class MavericksHubPlaylistService implements PlaylistService {
     @Override
     public List<MediaResponse> getAllMedia(Long playlistId) throws PlaylistNotFoundException {
         List<Media> media = mediaService.getMediaForPlaylist(playlistId);
-        return List.of(modelMapper.map(media, MediaResponse[].class));
+        return Arrays.asList(modelMapper.map(media, MediaResponse[].class));
     }
 }

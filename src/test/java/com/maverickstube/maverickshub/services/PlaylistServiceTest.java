@@ -14,6 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
 
 import java.util.List;
+import java.util.Set;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -30,7 +31,7 @@ public class PlaylistServiceTest {
 
 
     @Test
-    public void testCreatePlaylist() throws UserNotFoundException, PlaylistNotFoundException {
+    public void testCreatePlaylist() throws UserNotFoundException {
         CreatePlaylistRequest request = new CreatePlaylistRequest();
         request.setName("name");
         request.setDescription("description");
@@ -54,8 +55,32 @@ public class PlaylistServiceTest {
         System.out.println(response);
         media = mediaService.getMediaBy(102L);
         System.out.println("after: "+media.getPlaylist().size());
+
         assertThat(response).isNotNull();
         assertThat(response.getMedia().size()).isEqualTo(4);
+    }
+
+    @Test
+    public void playlistWhenSameMediaIsAddedThenPlaylistRemainsUnchanged() throws PlaylistNotFoundException {
+        AddMediaToPlaylistRequest addMediaRequest = new AddMediaToPlaylistRequest();
+        Long playlistId = 300L;
+        addMediaRequest.setPlaylistId(playlistId);
+        Long mediaId = 101L;
+        addMediaRequest.setMediaId(mediaId);
+
+        Set<Media> media = playlistService.getPlaylistBy(playlistId).getMedia();
+        assertThat(media).isNotNull();
+        var filteredMediaList = media.stream().filter(m -> m.getId().equals(mediaId)).toList();
+        assertThat(media.size()).isEqualTo(3);
+        assertThat(filteredMediaList.size()).isEqualTo(1);
+
+        var response = playlistService.addMediaToPlaylist(addMediaRequest);
+        assertThat(response).isNotNull();
+        media = playlistService.getPlaylistBy(playlistId).getMedia();
+        assertThat(media).isNotNull();
+        filteredMediaList = media.stream().filter(m -> m.getId().equals(mediaId)).toList();
+        assertThat(media.size()).isEqualTo(3);
+        assertThat(filteredMediaList.size()).isEqualTo(1);
     }
 
     @Test

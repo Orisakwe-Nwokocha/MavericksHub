@@ -11,7 +11,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.Set;
 
 import static jakarta.persistence.EnumType.STRING;
 import static jakarta.persistence.FetchType.EAGER;
@@ -46,7 +46,7 @@ public class Media {
     private User uploader;
 
     @ManyToMany(mappedBy = "media", fetch = EAGER)
-    private List<Playlist> playlist;
+    private Set<Playlist> playlist;
 
     @PrePersist
     private void setTimeCreated() {

@@ -8,13 +8,9 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Set;
 
 import static jakarta.persistence.FetchType.EAGER;
 import static jakarta.persistence.GenerationType.IDENTITY;
@@ -24,7 +20,7 @@ import static java.time.LocalDateTime.now;
 @Table(name = "playlists")
 @Getter
 @Setter
-@ToString
+//@ToString
 public class Playlist {
     @Id
     @GeneratedValue(strategy = IDENTITY)
@@ -51,7 +47,7 @@ public class Playlist {
             joinColumns = @JoinColumn(name = "playlist_id"),
             inverseJoinColumns = @JoinColumn(name = "media_id")
     )
-    private List<Media> media;
+    private Set<Media> media;
 
 
     @ManyToOne
@@ -60,11 +56,11 @@ public class Playlist {
 
     @PrePersist
     private void setTimeCreated() {
-        this.timeCreated = now();
+        timeCreated = now();
     }
 
     @PreUpdate
     private void setTimeUpdated() {
-        this.timeUpdated = now();
+        timeUpdated = now();
     }
 }

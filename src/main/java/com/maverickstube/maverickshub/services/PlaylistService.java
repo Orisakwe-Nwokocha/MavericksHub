@@ -19,7 +19,7 @@ public interface PlaylistService {
 
     Playlist getPlaylistBy(Long id) throws PlaylistNotFoundException;
 
-     AddMediaToPlaylistResponse addMediaToPlaylist(AddMediaToPlaylistRequest addMediaRequest) throws PlaylistNotFoundException;
+    AddMediaToPlaylistResponse addMediaToPlaylist(AddMediaToPlaylistRequest addMediaRequest) throws PlaylistNotFoundException;
 
     ShufflePlaylistResponse shuffle(ShufflePlaylistRequest request) throws PlaylistNotFoundException;
 
