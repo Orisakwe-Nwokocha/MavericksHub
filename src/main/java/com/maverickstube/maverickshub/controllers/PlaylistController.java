@@ -26,6 +26,7 @@ public class PlaylistController {
     public ResponseEntity<?> createPlaylist(@RequestBody CreatePlaylistRequest request)
             throws UserNotFoundException {
         log.info("Creating playlist: {}", request);
+        System.out.println("de");
         CreatePlaylistResponse response = playlistService.create(request);
         log.info("Created playlist: {}", response);
         return ResponseEntity.status(CREATED).body(response);
