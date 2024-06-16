@@ -23,8 +23,7 @@ public class PlaylistController {
     private final PlaylistService playlistService;
 
     @PostMapping
-    public ResponseEntity<?> createPlaylist(@RequestBody CreatePlaylistRequest request)
-            throws UserNotFoundException {
+    public ResponseEntity<?> createPlaylist(@RequestBody CreatePlaylistRequest request) throws UserNotFoundException {
         log.info("Creating playlist: {}", request);
         CreatePlaylistResponse response = playlistService.create(request);
         log.info("Created playlist: {}", response);
