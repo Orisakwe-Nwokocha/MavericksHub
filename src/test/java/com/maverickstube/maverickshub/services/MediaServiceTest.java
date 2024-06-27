@@ -43,7 +43,7 @@ public class MediaServiceTest {
     @Test
     public void uploadMediaTest(){
         Path path = Paths.get(TEST_VIDEO_LOCATION);
-        try(var inputStream = Files.newInputStream(path);) {
+        try(var inputStream = Files.newInputStream(path)) {
             UploadMediaRequest request = buildUploadMediaRequest(inputStream);
             UploadMediaResponse response = mediaService.upload(request);
             log.info("response--> {}", response);
@@ -69,8 +69,6 @@ public class MediaServiceTest {
         log.info("media items--> {}", media);
         assertThat(media).hasSize(3);
     }
-
-
 
     @Test
     @DisplayName("test update media files")

@@ -9,4 +9,6 @@ public interface UserService {
     CreateUserResponse register(CreateUserRequest request);
 
     User getById(Long id) throws UserNotFoundException;
+
+    User getByUsername(String username) throws UserNotFoundException;
 }
