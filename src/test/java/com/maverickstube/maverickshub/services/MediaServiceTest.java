@@ -87,4 +87,6 @@ public class MediaServiceTest {
         category  =  mediaService.getMediaBy(103L).getCategory();
         assertThat(category).isEqualTo(STEP_MOM);
     }
+
+
 }

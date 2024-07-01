@@ -7,6 +7,7 @@ import com.maverickstube.maverickshub.services.MediaService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import static org.springframework.http.HttpStatus.CREATED;
@@ -26,7 +27,8 @@ public class MediaController {
 
 
     @GetMapping
-    public ResponseEntity<?> getMediaForUser(@RequestParam Long userId) throws UserNotFoundException {
+    public ResponseEntity<?> getMediaForUser(@RequestParam Long userId, Authentication authentication) throws UserNotFoundException {
+        System.out.println("reached here: " + authentication.getAuthorities());
         return ResponseEntity.ok(mediaService.getMediaFor(userId));
     }
 

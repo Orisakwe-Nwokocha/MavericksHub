@@ -1,4 +1,4 @@
-package com.maverickstube.maverickshub.security;
+package com.maverickstube.maverickshub.security.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

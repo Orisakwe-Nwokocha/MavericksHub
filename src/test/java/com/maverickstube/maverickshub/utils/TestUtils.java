@@ -10,9 +10,8 @@ import java.io.InputStream;
 import static com.maverickstube.maverickshub.data.models.Category.ACTION;
 
 public class TestUtils {
-    public static final String TEST_IMAGE_LOCATION = "C:\\Users\\semicolon\\Desktop\\maverickshub\\maverickshub\\src\\main\\resources\\static\\thanos.webp";
-    public static final String TEST_VIDEO_LOCATION = "C:\\Users\\semicolon\\Desktop\\maverickshub\\maverickshub\\src\\main\\resources\\static\\Avengers_ Endgame (2019) - You Could Not Live With Your Own Failure.mp4";
-
+    public static final String TEST_IMAGE_LOCATION = "C:\\Users\\DELL\\IdeaProjects\\maverickshub\\src\\main\\resources\\static\\arsenal.avif";
+    public static final String TEST_VIDEO_LOCATION = "C:\\Users\\DELL\\IdeaProjects\\maverickshub\\src\\main\\resources\\static\\Uncle Ruckus.mp4";
 
     public static UploadMediaRequest buildUploadMediaRequest(InputStream inputStream) throws IOException {
         UploadMediaRequest request = new UploadMediaRequest();

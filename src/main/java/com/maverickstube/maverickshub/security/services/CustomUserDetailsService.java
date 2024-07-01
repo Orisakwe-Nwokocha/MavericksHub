@@ -1,6 +1,6 @@
 package com.maverickstube.maverickshub.security.services;
 
-import com.maverickstube.maverickshub.data.models.SecureUser;
+import com.maverickstube.maverickshub.security.models.SecureUser;
 import com.maverickstube.maverickshub.data.models.User;
 import com.maverickstube.maverickshub.exceptions.UserNotFoundException;
 import com.maverickstube.maverickshub.services.UserService;
