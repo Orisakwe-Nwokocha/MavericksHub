@@ -10,6 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
+
+import static com.maverickstube.maverickshub.data.models.Authority.USER;
+
 @Service
 public class MavericksHubUserService implements UserService{
     private final UserRepository userRepository;
@@ -29,6 +33,8 @@ public class MavericksHubUserService implements UserService{
     public CreateUserResponse register(CreateUserRequest request) {
         User user = modelMapper.map(request, User.class);
         user.setPassword(passwordEncoder.encode(request.getPassword()));
+        user.setAuthorities(new HashSet<>());
+        user.getAuthorities().add(USER);
         user = userRepository.save(user);
         var response = modelMapper.map(user, CreateUserResponse.class);
         response.setMessage("user registered successfully");

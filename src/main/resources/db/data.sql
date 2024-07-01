@@ -4,7 +4,7 @@ truncate table playlists cascade;
 truncate table playlist_media cascade;
 
 insert into users(id, email, password, time_created) values
-(200, 'john@email.com', 'password', '2024-06-04T15:03:03.792009700'),
+(200, 'john@email.com', '$2a$10$6rIpDTj3/hiYiHdnzooaWuSjGTZT8C88aIuRlo9Lph./ZY71fsl5S', '2024-06-04T15:03:03.792009700'),
 (201, 'jane@email.com', 'password', '2024-06-04T15:03:03.792009700'),
 (202, 'johnny@email.com', 'password', '2024-06-04T15:03:03.792009700'),
 (203, 'james@email.com', 'password', '2024-06-04T15:03:03.792009700');

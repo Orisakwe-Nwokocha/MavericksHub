@@ -7,7 +7,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.List;
 
 @AllArgsConstructor
 public class SecureUser implements UserDetails {
@@ -25,7 +24,10 @@ public class SecureUser implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("USER"));
+        return user.getAuthorities()
+                .stream()
+                .map(authority -> new SimpleGrantedAuthority(authority.name()))
+                .toList();
     }
 
     @Override

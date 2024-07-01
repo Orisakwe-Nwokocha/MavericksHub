@@ -73,12 +73,12 @@ public class CustomUsernamePasswordAuthenticationFilter extends UsernamePassword
     private static String generateAccessToken(Authentication authResult) {
         return JWT.create()
                 .withIssuer("mavericks_hub")
-                .withArrayClaim("roles", getClaimsFrom(authResult.getAuthorities()))
+                .withArrayClaim("roles", extractAuthorities(authResult.getAuthorities()))
                 .withExpiresAt(now().plus(1, HOURS))
                 .sign(Algorithm.HMAC512("secret"));
     }
 
-    private static String[] getClaimsFrom(Collection<? extends GrantedAuthority> authorities) {
+    private static String[] extractAuthorities(Collection<? extends GrantedAuthority> authorities) {
         return authorities.stream()
                 .map(GrantedAuthority::getAuthority)
                 .toArray(String[]::new);

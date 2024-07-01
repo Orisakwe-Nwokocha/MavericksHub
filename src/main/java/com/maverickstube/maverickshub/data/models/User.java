@@ -12,8 +12,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.Set;
 
+import static jakarta.persistence.EnumType.STRING;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static java.time.LocalDateTime.now;
 
@@ -29,6 +30,9 @@ public class User {
     @Column(unique = true)
     private String email;
     private String password;
+    @ElementCollection
+    @Enumerated(STRING)
+    private Set<Authority> authorities;
     @Setter(AccessLevel.NONE)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
