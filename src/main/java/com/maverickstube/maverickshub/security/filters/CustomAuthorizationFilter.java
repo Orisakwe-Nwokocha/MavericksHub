@@ -35,24 +35,31 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
         boolean isRequestPathPublic = PUBLIC_ENDPOINTS.contains(requestPath);
         if (isRequestPathPublic) filterChain.doFilter(request, response);
         String authorizationHeader = request.getHeader(AUTHORIZATION);
-        System.out.println("header: "+authorizationHeader);
-        if (authorizationHeader != null) {
-            String token = authorizationHeader.substring(JWT_PREFIX.length()).strip();
-            System.out.println("token: "+token);
-            JWTVerifier verifier = JWT.require(Algorithm.HMAC512("secret".getBytes()))
-                    .withIssuer("mavericks_hub")
-                    .withClaimPresence("roles")
-                    .build();
-            DecodedJWT decodedJWT = verifier.verify(token);
-            List<? extends GrantedAuthority> authorities = decodedJWT
-                    .getClaim("roles")
-                    .asList(SimpleGrantedAuthority.class);
-            Authentication authentication =
-                    new UsernamePasswordAuthenticationToken(null, null, authorities);
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-        }
+
+        if (authorizationHeader != null) doAuthorization(authorizationHeader);
 
         filterChain.doFilter(request, response);
+    }
+
+    private static void doAuthorization(String authorizationHeader) {
+        System.out.println("header: " + authorizationHeader);
+        String token = authorizationHeader.substring(JWT_PREFIX.length()).strip();
+        System.out.println("token: "+token);
+        JWTVerifier verifier = JWT.require(Algorithm.HMAC512("secret".getBytes()))
+                .withIssuer("mavericks_hub")
+                .withClaimPresence("roles")
+                .withClaimPresence("principal")
+                .withClaimPresence("credentials")
+                .build();
+        DecodedJWT decodedJWT = verifier.verify(token);
+        List<? extends GrantedAuthority> authorities = decodedJWT
+                .getClaim("roles")
+                .asList(SimpleGrantedAuthority.class);
+        String principal = decodedJWT.getClaim("principal").asString();
+        String credentials = decodedJWT.getClaim("credentials").asString();
+        Authentication authentication =
+                new UsernamePasswordAuthenticationToken(principal, credentials, authorities);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 
 }

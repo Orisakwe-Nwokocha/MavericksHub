@@ -3,15 +3,17 @@ package com.maverickstube.maverickshub.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.maverickstube.maverickshub.dtos.requests.LoginRequest;
+import com.maverickstube.maverickshub.dtos.responses.BaseResponse;
 import com.maverickstube.maverickshub.dtos.responses.LoginResponse;
+import com.maverickstube.maverickshub.utils.AuthUtils;
 import org.junit.jupiter.api.Test;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.mock.web.MockPart;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -31,11 +33,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @Sql(scripts = {"/db/data.sql"})
-@WithMockUser(authorities = {"USER"})
+//@WithMockUser(authorities = {"USER"})
 public class MediaControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
+    @Autowired
+    private AuthUtils authUtils;
+
+    @Autowired
+    private ModelMapper modelMapper;
 
     @Test
     public void testUploadMedia() throws Exception {
@@ -57,9 +64,9 @@ public class MediaControllerTest {
 
     @Test
     public void testGetMediaForUser() throws Exception {
-//        String token = getToken();
+        String token = getToken();
         mockMvc.perform(get("/api/v1/media?userId=200")
-//                        .header("Authorization", "Bearer " + token)
+                        .header("Authorization", "Bearer " + token)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is2xxSuccessful())
                 .andDo(print());
@@ -67,8 +74,9 @@ public class MediaControllerTest {
     }
 
     public String getToken() throws Exception {
+        authUtils.createUser();
         LoginRequest request = new LoginRequest();
-        request.setUsername("john@email.com");
+        request.setUsername("test@email.com");
         request.setPassword("password");
         ObjectMapper mapper = new ObjectMapper();
         MvcResult result = mockMvc.perform(post("/api/v1/auth")
@@ -76,9 +84,11 @@ public class MediaControllerTest {
                         .content(mapper.writeValueAsBytes(request)))
                 .andExpect(status().isOk())
                 .andReturn();
-        LoginResponse response = mapper.readValue(result.getResponse().getContentAsString(), LoginResponse.class);
-        System.out.println("RESULT: "+ response.getToken());
-        return  response.getToken();
+        BaseResponse<?> response = mapper.readValue(result.getResponse().getContentAsByteArray(), BaseResponse.class);
+        LoginResponse loginResponse = modelMapper.map(response.getData(), LoginResponse.class);
+        String token = loginResponse.getToken();
+        System.out.println("RESULT: "+ token);
+        return token;
     }
 
 

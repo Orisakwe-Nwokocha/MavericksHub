@@ -49,4 +49,17 @@ public class SecureUser implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
+    @Override
+    public String toString() {
+        return "[" +
+                "Username=" + user.getEmail() +
+                ", Password=" + "[PROTECTED]" +
+                ", Enabled=" + isEnabled() +
+                ", AccountNonExpired=" + isAccountNonExpired() +
+                ", CredentialsNonExpired=" + isCredentialsNonExpired() +
+                ", AccountNonLocked=" + isAccountNonLocked() +
+                ", Granted Authorities=" + getAuthorities() +
+                ']';
+    }
 }

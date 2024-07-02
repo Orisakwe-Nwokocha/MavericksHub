@@ -73,6 +73,8 @@ public class CustomUsernamePasswordAuthenticationFilter extends UsernamePassword
     private static String generateAccessToken(Authentication authResult) {
         return JWT.create()
                 .withIssuer("mavericks_hub")
+                .withClaim("principal", authResult.getPrincipal().toString())
+                .withClaim("credentials", authResult.getCredentials().toString())
                 .withArrayClaim("roles", extractAuthorities(authResult.getAuthorities()))
                 .withExpiresAt(now().plus(1, HOURS))
                 .sign(Algorithm.HMAC512("secret"));

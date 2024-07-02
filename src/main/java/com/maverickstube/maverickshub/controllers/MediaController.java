@@ -10,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
+
 import static org.springframework.http.HttpStatus.CREATED;
 
 @RestController
@@ -27,8 +29,12 @@ public class MediaController {
 
 
     @GetMapping
-    public ResponseEntity<?> getMediaForUser(@RequestParam Long userId, Authentication authentication) throws UserNotFoundException {
+    public ResponseEntity<?> getMediaForUser(@RequestParam Long userId, Authentication authentication, Principal principal) throws UserNotFoundException {
         System.out.println("reached here: " + authentication.getAuthorities());
+        System.out.println("name auth: " + authentication.getName());
+        System.out.println("principal auth: " + authentication.getPrincipal());
+        System.out.println("credentials: " + authentication.getCredentials());
+        System.out.println("principal: " + principal.getName());
         return ResponseEntity.ok(mediaService.getMediaFor(userId));
     }
 

@@ -15,6 +15,7 @@ import java.time.LocalDateTime;
 import java.util.Set;
 
 import static jakarta.persistence.EnumType.STRING;
+import static jakarta.persistence.FetchType.EAGER;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static java.time.LocalDateTime.now;
 
@@ -30,7 +31,7 @@ public class User {
     @Column(unique = true)
     private String email;
     private String password;
-    @ElementCollection
+    @ElementCollection(fetch = EAGER)
     @Enumerated(STRING)
     private Set<Authority> authorities;
     @Setter(AccessLevel.NONE)
